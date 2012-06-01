@@ -28,8 +28,10 @@ $(document).ready(function() {
 	  .transition().duration(2000)
 	  .attr("transform",function(d) { return "translate("+d.x+","+d.y+")";});
 	
-	if (first) {
-	  node.append("circle")
+	//node.remove("circle");
+	//node.remove("text");
+
+	node.append("circle")
 		.attr("r",function(d) {return d.r;})
 		.attr("fill",function(d) {return "#CCC";})
 		.text(function(d) {return d.hashtag});
@@ -39,19 +41,7 @@ $(document).ready(function() {
 		.attr("dy",".3em")
 		.text(function(d) {return d.hashtag + ": " + format(d.value)});
 	  first = false;
-	} else {
-	  node.select("circle")
-		.attr("r",function(d) {return d.r;})
-		.attr("fill",function(d) {return "#CCC";})
-		.text(function(d) {return d.hashtag});
-	  
-	  node.select("text")
-		.attr("text-anchor","middle")
-		.attr("dy",".3em")
-		.text(function(d) {return d.hashtag + ": " + format(d.value)});
-	}
   }
-
 	
 
   /* SOCKET IO STUFF */

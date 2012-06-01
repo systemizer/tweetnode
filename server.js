@@ -9,16 +9,17 @@ var static = require("node-static");
 var file = new (static.Server)(config.static.webroot)
 
 /* UTILS */
-function getLowValue(cache,high_keys) {
-  low_val = cache[high_keys[0]];
-  low_key = high_keys[0]
+function getLowKey(cache,high_keys) {
+  var low_key = high_keys[0];
+  var low_val = cache[low_key];
   high_keys.forEach(function(value,index) {
 	if (cache[value]<low_val) {
 	  console.log("found lower key " + value + " with value " + cache[value]);
-	  low_val = cache[value];
 	  low_key = value;
+	  low_val = cache[low_key];
 	}
   });
+  return low_key;
 }
   
 
@@ -67,8 +68,6 @@ ioServer.on("connection",function(socket) {
 /* END SOCKET.IO */
 
 var high_keys = [];
-var low_key = "";
-var low_val = 10000;
 var cache;
 
 /* TWITTER AND REDIS */
@@ -122,10 +121,12 @@ node.stream("statuses/sample",function(stream) {
 		  cur_txn = [];
 		  multi.exec(function(err,replies)
 					 {
-					   getLowValue(cache,high_keys);
-					   console.log(cache);
-					   console.log("LOW VAL: " +low_val + " LOW KEY " + low_key);
-					   replies.forEach(function(value,index) {
+					   //console.log(cache);
+					   //console.log("LOW VAL: " +low_val + " LOW KEY " + low_key);
+					   replies.map(function(value,index) {
+						 var low_key = getLowKey(cache,high_keys);
+						 var low_val = cache[low_key];
+
 						 //console.log("parsing int");
 						 var new_val = parseInt(value);						 
 						 console.log("NEW VAL: " + new_val + " for " + cur_txn_copy[index]);
@@ -136,9 +137,6 @@ node.stream("statuses/sample",function(stream) {
 						   high_keys.remove(high_keys.indexOf(low_key));
 						   cache[cur_txn_copy[index]] = new_val;
 						   high_keys.push(cur_txn_copy[index]);
-						   var low_val,low_key = getLowValue(cache,high_keys);
-						   console.log("New Low Value: "+low_val);
-						   console.log("New Low Key: "+low_key);
 						 }
 					   });
 					   console.log(high_keys);
