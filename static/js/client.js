@@ -45,7 +45,7 @@ $(document).ready(function() {
 	
 
   /* SOCKET IO STUFF */
-  var socket = io.connect('http://localhost');
+  var socket = io.connect('http://tweetnode.com');
   socket.on('receiveData', function (data) {
 	$('#intro-message').hide();
 	drawData(data);
