@@ -14,7 +14,7 @@ function getLowKey(cache,high_keys) {
   var low_val = cache[low_key];
   high_keys.forEach(function(value,index) {
 	if (cache[value]<low_val) {
-	  console.log("found lower key " + value + " with value " + cache[value]);
+	    //console.log("found lower key " + value + " with value " + cache[value]);
 	  low_key = value;
 	  low_val = cache[low_key];
 	}
@@ -55,7 +55,7 @@ httpServer = http.createServer(function(req,res){
 	});
   }
 });
-httpServer.listen(8000);
+httpServer.listen(3000);
 
 var ioServer = io.listen(httpServer);
 
@@ -129,17 +129,17 @@ node.stream("statuses/sample",function(stream) {
 
 						 //console.log("parsing int");
 						 var new_val = parseInt(value);						 
-						 console.log("NEW VAL: " + new_val + " for " + cur_txn_copy[index]);
-						 console.log("LOW VAL: " +low_val + " LOW KEY " + low_key);
+						 //console.log("NEW VAL: " + new_val + " for " + cur_txn_copy[index]);
+						 //console.log("LOW VAL: " +low_val + " LOW KEY " + low_key);
 						 if (new_val > low_val && high_keys.indexOf(cur_txn_copy[index])==-1) {
-						   console.log("HELLLLLLLLOOOOOOOO");
+						     //console.log("HELLLLLLLLOOOOOOOO");
 						   delete cache[high_keys.po];
 						   high_keys.remove(high_keys.indexOf(low_key));
 						   cache[cur_txn_copy[index]] = new_val;
 						   high_keys.push(cur_txn_copy[index]);
 						 }
 					   });
-					   console.log(high_keys);
+					   //console.log(high_keys);
 					   redisClient.mget(high_keys,function(err,res) {
 						 cur_data = {'name':'data','children':[]};
 						 res.map(function(value,index) {
