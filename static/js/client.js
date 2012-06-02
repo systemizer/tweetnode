@@ -1,6 +1,5 @@
 $(document).ready(function() {
   var r = 960;
-  first = true;
 
   var bubble = d3.layout.pack()
 	.sort(null)
@@ -28,19 +27,18 @@ $(document).ready(function() {
 	  .transition().duration(2000)
 	  .attr("transform",function(d) { return "translate("+d.x+","+d.y+")";});
 	
-	//node.remove("circle");
-	//node.remove("text");
-
 	node.append("circle")
 		.attr("r",function(d) {return d.r;})
 		.attr("fill",function(d) {return "#CCC";})
 		.text(function(d) {return d.hashtag});
 	  
-	  node.append("text")
-		.attr("text-anchor","middle")
-		.attr("dy",".3em")
-		.text(function(d) {return d.hashtag + ": " + format(d.value)});
-	  first = false;
+	node.append("a")
+	  .attr("xlink:href",function(d) {return "https://twitter.com/search/" + d.hashtag;})
+	  .attr("target","_blank")
+	  .append("text")
+	  .attr("text-anchor","middle")
+	  .attr("dy",".3em")
+	  .text(function(d) {return d.hashtag + ": " + format(d.value)});
   }
 	
 
